@@ -4,6 +4,15 @@ cmake_minimum_required(VERSION 3.5)
 #setup project name and version (Major, minor, Patch)
 project(ChatServer VERSION 0.0.1)
 
+#find boost library
+find_package(Boost REQUIRED)
+if (NOT Boost_FOUND)
+	message(FATAL "cmake can't found boost library")
+endif()
+
+#include all boost headers and sources and other components
+include_directories(${Boost_INCLUDE_DIRS})
+
 #set variables for Headers and sources files
 set(HEADERS 
 	chat_message.h
@@ -21,3 +30,5 @@ add_executable(${CMAKE_PROJECT_NAME}_bin ${HEADERS} ${SOURCES})
 #deligate work for subdirectory
 add_subdirectory(test)
 add_subdirectory(lib/googletest) #https://github.com/google/googletest
+
+target_link_libraries(${CMAKE_PROJECT_NAME}_bin LINK_PUBLIC ${Boost_LIBRARIES})
